@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Browser</title>
+    <link rel="icon" type="image/icon" href="/favicon.png">
+    <link href="https://adamschwartz.co/chrome-tabs/css/chrome-tabs.css" rel="stylesheet">
+    <link href="https://adamschwartz.co/chrome-tabs/css/chrome-tabs-dark-theme.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://wraithcode2018.github.io/assets/text/css/wicons.css">
+    <style>
+      :root {--cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="19" viewBox="5 2 20 20"><path fill="%23000000" stroke="%23ffffff" stroke-width="1.5" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L6.35 2.85a.5.5 0 0 0-.85.35Z"></path></svg>'), default;}
+      body {overflow: hidden; font-family: 'sans serif'; background-image: none; margin: 0; color: #ffffff; background: #202124;}
+      .browser {min-height: 100vh; width: 100vw; background: #202124; cursor: var(--cursor) !important;}
+      .chrome-tab-urldata {display: none;}
+      .chrome-tabs-content {max-width: calc(100% - 40px) !important; position: absolute !important; cursor: var(--cursor) !important;}
+      .addtab {display: block; height: 20px; width: 20px; margin: 13px; font-size: 20px; border: none; background: transparent; border-radius: 50%; color: var(--theme-text); position: absolute; top: 0; right: 0; display: flex; align-items: center; justify-content: center;}
+      .addtab i {min-width: 20px;}
+      .addtab:hover {background: #ffffff0f; cursor: var(--cursor);}
+      .inputs {height: 40px; width: calc(100% - 18px); padding: 0 8px; background: #323639; display: flex; align-items: center; gap: 8px;}
+      .inputs button {min-width: 28px; max-width: 28px; min-height: 28px; max-height: 28px; display: flex; flex-grow: 0; align-items: center; justify-content: center; color: var(--theme-text); font-size: 20px; background: transparent; border: none; border-radius: 50%; cursor: var(--cursor);}
+      .inputs button:hover {background: #ffffff0f;}
+      .inputs button i {min-width: 1em;}
+      #urlinput {width: 100%; background: #292b2e; padding: 6px 8px; border: none; border-radius: 20px; color: var(--theme-text);}
+      #urlinput:focus {outline: 2px solid #609edc;}
+      #spinner {width: 20px; height: 20px; border: 3px solid #ffffff; border-bottom-color: transparent; border-radius: 50%; display: none; box-sizing: border-box; animation: rotation 1s linear infinite; position: absolute; right: 50px;}
+      @keyframes rotation {0% {transform: rotate(0deg);}100% {transform: rotate(360deg);}} 
+      .browsercontentcontainer {height: calc(100vh - 86px); width: 100vw; position: absolute; left: 0; top: 86px;}
+      #browsercontent {min-height: 100%; width: 100%; border: none; display: none;}
+      #browsercontent.activetab {display: block;}
+      .internalpage {height: calc(100% - 20px); width: calc(100% - 20px); padding: 10px; overflow: scroll; display: none;}
+      .internalpage.activetab {display: block;}
+    </style>
+  </head>
+  <body>
+    <div class="browser">
+      <header>
+        <div class="chrome-tabs chrome-tabs-dark-theme" style="--tab-content-margin: 9px">
+          <div class="chrome-tabs-content">
+            <div class="chrome-tab">
+              <div class="chrome-tab-urldata">https://google.com</div>
+              <div class="chrome-tab-dividers"></div>
+              <div class="chrome-tab-background">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg"><defs><symbol id="chrome-tab-geometry-left" viewBox="0 0 214 36"><path d="M17 0h197v36H0v-2c4.5 0 9-3.5 9-8V8c0-4.5 3.5-8 8-8z"/></symbol><symbol id="chrome-tab-geometry-right" viewBox="0 0 214 36"><use xlink:href="#chrome-tab-geometry-left"/></symbol><clipPath id="crop"><rect class="mask" width="100%" height="100%" x="0"/></clipPath></defs><svg width="52%" height="100%"><use xlink:href="#chrome-tab-geometry-left" width="214" height="36" class="chrome-tab-geometry"/></svg><g transform="scale(-1, 1)"><svg width="52%" height="100%" x="-100%" y="0"><use xlink:href="#chrome-tab-geometry-right" width="214" height="36" class="chrome-tab-geometry"/></svg></g></svg>
+              </div>
+              <div class="chrome-tab-content">
+                <div class="chrome-tab-favicon" style="background-image: url('https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://google.com&size=16')"></div>
+                <div class="chrome-tab-title">Google</div>
+                <div class="chrome-tab-drag-handle"></div>
+                <div class="chrome-tab-close"></div>
+              </div>
+            </div>
+            <div class="chrome-tab" active>
+              <div class="chrome-tab-urldata">wc://newtab</div>
+              <div class="chrome-tab-dividers"></div>
+              <div class="chrome-tab-background">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg"><defs><symbol id="chrome-tab-geometry-left" viewBox="0 0 214 36"><path d="M17 0h197v36H0v-2c4.5 0 9-3.5 9-8V8c0-4.5 3.5-8 8-8z"/></symbol><symbol id="chrome-tab-geometry-right" viewBox="0 0 214 36"><use xlink:href="#chrome-tab-geometry-left"/></symbol><clipPath id="crop"><rect class="mask" width="100%" height="100%" x="0"/></clipPath></defs><svg width="52%" height="100%"><use xlink:href="#chrome-tab-geometry-left" width="214" height="36" class="chrome-tab-geometry"/></svg><g transform="scale(-1, 1)"><svg width="52%" height="100%" x="-100%" y="0"><use xlink:href="#chrome-tab-geometry-right" width="214" height="36" class="chrome-tab-geometry"/></svg></g></svg>
+              </div>
+              <div class="chrome-tab-content">
+                <div class="chrome-tab-favicon" style="background-image: url('nofavicon.png')"></div>
+                <div class="chrome-tab-title">New Tab</div>
+                <div class="chrome-tab-drag-handle"></div>
+                <div class="chrome-tab-close"></div>
+              </div>
+            </div>
+          </div>
+          <div class="chrome-tabs-bottom-bar"></div>
+          <button class="addtab" data-add-tab><i class="wicon wicon-plusmark"></i></button>
+        </div>
+        <div class="inputs">
+          <button><i class="wicon wicon-arrow-back"></i></button>
+          <button><i class="wicon wicon-arrow-forward"></i></button>
+          <button><i class="wicon wicon-reload"></i></button>
+          <button><i class="wicon wicon-home"></i></button>
+          <input placeholder="URL" id="urlinput">
+          <span id="spinner"></span>
+          <button><i class="wicon wicon-bar-menu"></i></button>
+        </div>
+      </header>
+      <div class="mock-browser-content">
+        <div class="buttons" style="display: none">
+          <button data-theme-toggle><i class="wicon wicon-brightness"></i></button>
+          <button data-add-tab><i class="wicon wicon-plusmark"></i></button>
+          <button data-add-background-tab>Add tab in the background</button>
+          <button data-remove-tab><i class="wicon wicon-xmark"></i></button>
+        </div>
+      </div>
+      <div class="browsercontentcontainer">
+        <!--<iframe id="browsercontent" is="x-frame-bypass"></iframe>-->
+        <iframe id="browsercontent"></iframe>
+        <div id="internalpage-newtab" class="internalpage">
+          <h1>Search to get started</h1>
+        </div>
+        <div id="internalpage-settings" class="internalpage">
+          <h2>Settings</h2>
+        </div>
+        <div id="internalpage-list" class="internalpage">
+          <h2>List</h2>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/draggabilly@2.2.0/dist/draggabilly.pkgd.min.js"></script>
+    <script src="https://adamschwartz.co/chrome-tabs/js/chrome-tabs.js"></script>
+    <script src="https://unpkg.com/@ungap/custom-elements-builtin"></script>
+    <script src="https://niutech.github.io/x-frame-bypass/x-frame-bypass.js" type="module"></script>
+    <script>
+      // GENERAL SETUP
+      var urlinput = document.getElementById('urlinput');
+      var spinner = document.getElementById('spinner');
+      var internalpages = document.querySelectorAll('.internalpage');
+    
+      // chrome tabs setup
+      var el = document.querySelector('.chrome-tabs')
+      var chromeTabs = new ChromeTabs()
+
+      chromeTabs.init(el);
+      // other general setup that has to be after init because js
+      var currenttabtitle = chromeTabs.activeTabEl.querySelector('.chrome-tab-title').textContent;
+      var currenttabicon = chromeTabs.activeTabEl.querySelector('.chrome-tab-favicon').style.backgroundImage.slice(5, -2);
+      var currenttaburl = chromeTabs.activeTabEl.querySelector('.chrome-tab-urldata').textContent;
+
+      el.addEventListener('activeTabChange', ({ detail }) => {
+        //urlinput.value = chromeTabs.activeTabEl.querySelector('.chrome-tab-urldata').textContent;
+        document.getElementById('browsercontent').src = urlinput.value;
+      });
+      el.addEventListener('tabAdd', ({ detail }) => console.log('Tab added', detail.tabEl));
+      el.addEventListener('tabRemove', ({ detail }) => console.log('Tab removed', detail.tabEl));
+
+      document.querySelector('button[data-add-tab]').addEventListener('click', _ => {
+        chromeTabs.addTab({
+          title: 'New Tab',
+          favicon: 'nofavicon.png'
+        })
+      });
+
+      document.querySelector('button[data-add-background-tab]').addEventListener('click', _ => {
+        chromeTabs.addTab({
+          title: 'New Tab',
+          favicon: 'nofavicon.png'
+        }, {
+          background: true
+        })
+      });
+
+      document.querySelector('button[data-remove-tab]').addEventListener('click', _ => {
+        chromeTabs.activeTabEl.querySelector('.chrome-tab-title').textContent = 'Changed!'
+      });
+      urlinput.addEventListener(`focus`, () => urlinput.select()); // select all text in url bar when clicked on
+      function blurinput() { urlinput.blur(); }
+      urlinput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          if (urlinput.value.startsWith('wc://')) {
+            const page = document.getElementById('internalpage-' + urlinput.value.replace('wc://', ''));
+            if (page) {
+              console.log('page found: ' + page.id);
+              internalpages.forEach(page => page.classList.remove('activetab'));
+              page.classList.add('activetab');
+              console.log(page.classList)
+            } else {
+              if (urlinput.value != ('[Invalid internal page]')) {
+                urlinput.value = '[Invalid internal page]';
+              }
+            }
+          }
+          blurinput(); // Call blurinput only once at the end
+        }
+      });
+    </script>
+  </body>
+</html>
+    
